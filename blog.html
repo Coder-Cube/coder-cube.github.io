@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Coder Cube - Blog</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+<link rel="icon" href="uploads/cube.png" />
+
+<style>
+  .blog-hero {
+    padding: 10rem 3rem 4rem;
+    text-align: center; z-index: 1; position: relative;
+    background: var(--bg); transition: background 0.4s;
+  }
+  .blog-hero h1 { font-size: clamp(2.5rem,5vw,4.5rem); font-weight:700; letter-spacing:-0.04em; margin-bottom:0.6rem; }
+  .blog-hero p  { color: var(--mid); font-size:1rem; max-width:440px; margin:0 auto; line-height:1.7; }
+
+  #posts-container {
+    max-width: 720px; margin: 0 auto;
+    padding: 0 2rem 6rem; display:flex; flex-direction:column; gap:2rem;
+    position: relative; z-index:1;
+  }
+
+  .post-card {
+    background: var(--code-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    box-shadow: var(--nm-out);
+    overflow: hidden;
+    transition: background 0.4s, box-shadow 0.4s, border-color 0.4s, transform 0.25s;
+  }
+  .post-card:hover { transform: translateY(-3px); }
+
+  .post-header {
+    background: var(--surface);
+    padding: 0.6rem 1.2rem;
+    border-bottom: 1px solid var(--tab-border);
+    display: flex; align-items: center; gap: 0.5rem;
+    transition: background 0.4s, border-color 0.4s;
+  }
+  .post-header-dots { display:flex; gap:5px; margin-right:auto; }
+  .post-date {
+    font-family: var(--font-mono); font-size:0.7rem; color:var(--dim);
+    cursor:default;
+  }
+
+  #date-tooltip {
+    position: fixed; z-index: 9999; pointer-events: none;
+    background: var(--ink); color: var(--bg);
+    font-family: var(--font-mono); font-size: 0.68rem;
+    padding: 0.3rem 0.75rem; border-radius: 7px;
+    white-space: nowrap; opacity: 0;
+    transition: opacity 0.15s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  }
+  #date-tooltip::after {
+    content: ''; position: absolute; top: 100%; left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--ink);
+  }
+
+  .post-body { padding: 1.8rem 2rem; }
+  .post-title { font-size:1.25rem; font-weight:700; letter-spacing:-0.02em; margin-bottom:1rem; }
+  .post-text { color:var(--mid); line-height:1.8; font-size:0.95rem; }
+  .post-text b  { color:var(--ink); font-weight:600; }
+  .post-text i  { font-style:italic; }
+  .mono-inline {
+    font-family: var(--font-mono); font-style:italic;
+    background: rgba(92,92,232,0.09); color:var(--code-kw);
+    padding:0.1em 0.4em; border-radius:5px;
+    font-size:0.88em;
+  }
+  html.dark .mono-inline { background: rgba(180,160,255,0.12); }
+
+  .post-slider {
+    margin-top: 1.4rem;
+    position: relative; border-radius:12px; overflow:hidden;
+    background: var(--surface);
+  }
+  .slider-track { display:flex; transition:transform 0.35s cubic-bezier(0.4,0,0.2,1); }
+  .slider-img {
+    min-width:100%; max-height:360px; object-fit:cover;
+    display:block;
+  }
+  .slider-btn {
+    position:absolute; top:50%; transform:translateY(-50%);
+    background: var(--glass-bg); backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border:1px solid var(--glass-border);
+    box-shadow:0 2px 12px var(--glass-shadow), inset 0 1px 0 var(--glass-shine);
+    color:var(--ink); width:36px; height:36px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:0.9rem;
+    transition:background 0.2s;
+    z-index:2;
+  }
+  .slider-btn:hover { background:var(--glass-hover-bg); }
+  .slider-prev { left:10px; }
+  .slider-next { right:10px; }
+  .slider-dots {
+    position:absolute; bottom:8px; left:50%; transform:translateX(-50%);
+    display:flex; gap:5px;
+  }
+  .slider-dot {
+    width:6px; height:6px; border-radius:50%;
+    background:rgba(255,255,255,0.5); cursor:pointer;
+    transition:background 0.2s, transform 0.2s;
+  }
+  .slider-dot.active { background:#fff; transform:scale(1.3); }
+
+  .blog-empty {
+    text-align:center; padding:4rem 2rem;
+    color:var(--dim); font-family:var(--font-mono); font-size:0.85rem;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas-bg"></canvas>
+
+<nav>
+  <a href="home.html" class="nav-logo">Coder Cube</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="blog.html" class="active">Blog</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg class="toggle-icon icon-sun" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="toggle-icon icon-moon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</nav>
+
+<div class="blog-hero reveal">
+  <p class="section-eyebrow">Devlog</p>
+  <h1>Blog</h1>
+  <p>Updates, thoughts, and technical deep-dives on Helion Engine and VR development.</p>
+</div>
+
+<div id="posts-container"></div>
+
+<footer>Coder Cube &nbsp;·&nbsp; Helion Engine &nbsp;·&nbsp; © 2026</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   BLOG POSTS
+   Fields:
+     date:   "M/D/YY"  e.g. "4/25/26"
+     title:  string
+     body:   string - supports <b>, <i>, <m>text</m>
+     images: [] array of image file paths (leave empty if none)
+═══════════════════════════════════════════════════════════ */
+const BLOG_POSTS = [
+  {
+    date: "4/26/26",
+    title: "Helion Engine - First Devlog",
+    body: "This is the first official devlog for <b>Helion Engine</b>. This project started on the first of this year as a question: <i>what if we stopped treating standalone VR hardware as a limitation and started treating it as a design constraint?</i>\n\nThe core idea is to build everything - rendering, audio, physics - with that constraint in mind from <b>day one</b>. Not a desktop engine ported down. Something <m>built_for_it</m>.\n\nMore technical details coming soon.",
+    images: ["uploads/HelionLogo.png"]
+  },
+];
+
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function ordinal(n) {
+  const s = ['th','st','nd','rd'];
+  const v = n % 100;
+  return n + (s[(v-20)%10] || s[v] || s[0]);
+}
+
+function compactDate(str) { return str; }
+
+function fullDate(str) {
+  const parts = str.split('/');
+  const m = parseInt(parts[0]), d = parseInt(parts[1]), y = parseInt(parts[2]);
+  const fullYear = y < 100 ? 2000 + y : y;
+  return `${MONTHS[m-1]} ${ordinal(d)}, ${fullYear}`;
+}
+
+function parseBody(text) {
+  // Replace <m>...</m> with styled span, then newlines with <br>
+  return text
+    .replace(/<m>([\s\S]*?)<\/m>/g, '<span class="mono-inline">$1</span>')
+    .replace(/\n/g, '<br>');
+}
+
+function buildSlider(images, cardIndex) {
+  if (!images || images.length === 0) return '';
+  let imgs = images.map(src => `<img class="slider-img" src="${src}" alt="Post image" />`).join('');
+  let dots = images.map((_,i) => `<div class="slider-dot${i===0?' active':''}" data-index="${i}"></div>`).join('');
+  let prevBtn = images.length > 1 ? `<button class="slider-btn slider-prev" data-card="${cardIndex}">&#8249;</button>` : '';
+  let nextBtn = images.length > 1 ? `<button class="slider-btn slider-next" data-card="${cardIndex}">&#8250;</button>` : '';
+  let dotsHtml = images.length > 1 ? `<div class="slider-dots" data-card="${cardIndex}">${dots}</div>` : '';
+  return `<div class="post-slider" data-slider="${cardIndex}" data-count="${images.length}">
+    <div class="slider-track">${imgs}</div>
+    ${prevBtn}${nextBtn}${dotsHtml}
+  </div>`;
+}
+
+function renderPosts() {
+  const container = document.getElementById('posts-container');
+  if (!BLOG_POSTS.length) {
+    container.innerHTML = '<div class="blog-empty">// no posts yet</div>';
+    return;
+  }
+
+  // Newest first
+  const sorted = [...BLOG_POSTS].reverse();
+
+  container.innerHTML = sorted.map((post, i) => `
+    <div class="post-card reveal">
+      <div class="post-header">
+        <div class="post-header-dots">
+          <div class="code-dot" style="background:#ff5f57;width:8px;height:8px"></div>
+          <div class="code-dot" style="background:#febc2e;width:8px;height:8px"></div>
+          <div class="code-dot" style="background:#28c840;width:8px;height:8px"></div>
+        </div>
+        <div class="post-date" data-fulldate="${fullDate(post.date)}">
+          ${post.date}
+        </div>
+      </div>
+      <div class="post-body">
+        <div class="post-title">${post.title}</div>
+        <div class="post-text">${parseBody(post.body)}</div>
+        ${buildSlider(post.images, i)}
+      </div>
+    </div>
+  `).join('');
+
+  // Wire up sliders
+  document.querySelectorAll('[data-slider]').forEach(sliderEl => {
+    const idx = parseInt(sliderEl.dataset.slider);
+    const count = parseInt(sliderEl.dataset.count);
+    const track = sliderEl.querySelector('.slider-track');
+    const dotsEl = sliderEl.querySelector('.slider-dots');
+    let current = 0;
+
+    function goTo(n) {
+      current = (n + count) % count;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      if (dotsEl) {
+        dotsEl.querySelectorAll('.slider-dot').forEach((d,i) => d.classList.toggle('active', i===current));
+      }
+    }
+
+    const prev = sliderEl.querySelector('.slider-prev');
+    const next = sliderEl.querySelector('.slider-next');
+    if (prev) prev.addEventListener('click', () => goTo(current - 1));
+    if (next) next.addEventListener('click', () => goTo(current + 1));
+    if (dotsEl) dotsEl.querySelectorAll('.slider-dot').forEach((d,i) => d.addEventListener('click', () => goTo(i)));
+  });
+
+  // Reveal new elements
+  document.querySelectorAll('.reveal').forEach(r => io.observe(r));
+}
+
+// Scroll reveal
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }});
+}, {threshold:0.08});
+
+renderPosts();
+
+//Floating date tooltip
+const tooltip = document.createElement('div');
+tooltip.id = 'date-tooltip';
+document.body.appendChild(tooltip);
+
+document.addEventListener('mouseover', e => {
+  const el = e.target.closest('[data-fulldate]');
+  if (!el) return;
+  tooltip.textContent = el.dataset.fulldate;
+  tooltip.style.opacity = '1';
+});
+document.addEventListener('mousemove', e => {
+  const el = e.target.closest('[data-fulldate]');
+  if (!el) { tooltip.style.opacity = '0'; return; }
+  const r = el.getBoundingClientRect();
+  tooltip.style.left = (r.left + r.width / 2 - tooltip.offsetWidth / 2) + 'px';
+  tooltip.style.top  = (r.top - tooltip.offsetHeight - 8) + 'px';
+});
+document.addEventListener('mouseout', e => {
+  if (!e.target.closest('[data-fulldate]')) tooltip.style.opacity = '0';
+});
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const dark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('cc-theme', dark ? 'dark' : 'light');
+});
+
+const canvas = document.getElementById('canvas-bg');
+const ctx = canvas.getContext('2d');
+let W, H, pts = [];
+function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+resize(); window.addEventListener('resize', resize);
+for(let i=0;i<30;i++) pts.push({ x:Math.random()*W, y:Math.random()*H, vx:(Math.random()-.5)*.12, vy:(Math.random()-.5)*.12, r:Math.random()*.9+.3, a:Math.random()*.15+.04 });
+(function draw(){
+  ctx.clearRect(0,0,W,H);
+  pts.forEach(p => {
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(92,92,232,${p.a})`; ctx.fill();
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0||p.x>W) p.vx*=-1;
+    if(p.y<0||p.y>H) p.vy*=-1;
+  });
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Coder Cube - Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+<link rel="icon" href="uploads/cube.png" />
+
+<template id="__bundler_thumbnail" data-bg-color="#eaeaf4">
+  <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="600" fill="#eaeaf4"/>
+    <rect x="260" y="180" width="280" height="240" rx="20" fill="#dddde8"/>
+    <text x="400" y="420" text-anchor="middle" fill="#5c5ce8" font-size="22" font-family="monospace">Coder Cube</text>
+  </svg>
+</template>
+
+<style>
+  #hero {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 8rem 2rem 4rem; z-index: 1;
+  }
+  .hero-glow {
+    position: absolute; width: 520px; height: 520px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(92,92,232,0.08) 0%, transparent 70%);
+    pointer-events: none; animation: breathe 7s ease-in-out infinite;
+  }
+  @keyframes breathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+
+  .cube-stage {
+    position: relative; width: 230px; height: 230px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 2.8rem;
+  }
+  .cube-nm-base {
+    width: 200px; height: 200px; border-radius: 28px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px var(--glass-shadow), inset 0 1px 0 var(--glass-shine);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.4s, box-shadow 0.4s;
+  }
+  .cube-img {
+    width: 155px; height: 155px; object-fit: contain;
+    filter: drop-shadow(0 6px 22px rgba(0,0,0,0.22)) drop-shadow(0 2px 6px rgba(0,0,0,0.14));
+    animation: float 7s ease-in-out infinite;
+  }
+  html.dark .cube-img {
+    filter: drop-shadow(0 6px 28px rgba(255,255,255,0.16)) drop-shadow(0 2px 8px rgba(255,255,255,0.08));
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+  .hero-label {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--mid); letter-spacing: 0.22em; text-transform: uppercase;
+    margin-bottom: 0.8rem; opacity: 0; animation: fade-up 0.7s 0.1s forwards;
+  }
+  .hero-title {
+    font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 700;
+    letter-spacing: -0.04em; text-align: center;
+    line-height: 1; margin-bottom: 2rem;
+    opacity: 0; animation: fade-up 0.7s 0.2s forwards;
+  }
+  .hero-title .accent { color: var(--accent); }
+
+  .hero-code-wrap {
+    background: var(--code-bg); border-radius: 12px;
+    box-shadow: var(--nm-out); border: 1px solid var(--card-border);
+    overflow: hidden; margin-bottom: 2.4rem;
+    width: 100%; max-width: 520px;
+    opacity: 0; animation: fade-up 0.7s 0.5s forwards;
+    transition: background 0.4s, box-shadow 0.4s, border-color 0.4s;
+  }
+
+  .hero-cta {
+    display: flex; gap: 0.8rem; flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0; animation: fade-up 0.7s 0.8s forwards;
+  }
+
+  @keyframes fade-up { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+  #about { background: var(--bg2); transition: background 0.4s; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .about-text p { color: var(--mid); line-height: 1.85; font-size: 1rem; margin-bottom: 1.1rem; }
+  .about-text p strong { color: var(--ink); font-weight: 600; }
+
+  .stat-row { display: flex; gap: 1.2rem; margin-top: 2rem; flex-wrap: wrap; }
+  .stat-card {
+    background: var(--glass-bg); border-radius: 14px;
+    /*backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);*/
+    box-shadow: 0 2px 12px var(--glass-shadow), inset 0 1px 0 var(--glass-shine);
+    border: 1px solid var(--glass-border);
+    padding: 1rem 1.4rem; min-width: 90px;
+    transition: background 0.4s;
+  }
+  .stat-card {
+  transform: translateZ(0);
+}
+  .stat-num { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 0.25rem; }
+  .stat-label { font-size: 0.7rem; color: var(--dim); letter-spacing: 0.06em; }
+
+  .editor-panel {
+    background: var(--code-bg); border-radius: 16px;
+    box-shadow: var(--nm-out); border: 1px solid var(--card-border);
+    overflow: hidden; transition: background 0.4s, box-shadow 0.4s, border-color 0.4s;
+  }
+  .editor-tabs {
+    background: var(--surface); display: flex; align-items: center;
+    border-bottom: 1px solid var(--tab-border); padding: 0 0.5rem;
+    transition: background 0.4s, border-color 0.4s;
+  }
+  .editor-tab { padding: 0.6rem 1.1rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--dim); border-bottom: 2px solid transparent; cursor: default; }
+  .editor-tab.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--code-bg); transition: background 0.4s; }
+  .editor-tab-dots { display: flex; gap: 5px; align-items: center; padding: 0 0.8rem; margin-right: auto; }
+  .editor-code { padding: 1.2rem 0; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.9; }
+
+  #helion { background: var(--bg); transition: background 0.4s; }
+  .engine-top { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-bottom: 3rem; }
+  .engine-desc { color: var(--mid); line-height: 1.8; font-size: 1rem; }
+  .engine-desc p { margin-bottom: 1rem; }
+  .engine-desc strong { color: var(--ink); font-weight: 600; }
+
+  .features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; }
+  .feature-card {
+    background: var(--code-bg); border-radius: var(--radius);
+    box-shadow: var(--nm-out); border: 1px solid var(--card-border);
+    overflow: hidden; transition: transform 0.25s, box-shadow 0.25s, background 0.4s, border-color 0.4s;
+    cursor: default;
+  }
+  .feature-card:hover { transform: translateY(-4px); }
+  .feat-code-header {
+    background: var(--surface); padding: 0.5rem 0.9rem;
+    display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 1px solid var(--tab-border);
+    transition: background 0.4s, border-color 0.4s;
+  }
+  .feat-code-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .feat-filename { font-family: var(--font-mono); font-size: 0.65rem; color: var(--dim); margin-left: auto; }
+  .feat-body { padding: 1.4rem 1.5rem; }
+  .feat-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .feat-desc { font-size: 0.85rem; color: var(--mid); line-height: 1.65; }
+  .token { font-family: var(--font-mono); font-size: 0.75rem; display: inline-block; margin-top: 1rem; padding: 0.2rem 0.6rem; border-radius: 6px; }
+  .token-blue   { background: rgba(0,102,204,0.09);  color: var(--code-fn); }
+  .token-purple { background: rgba(124,58,237,0.09); color: var(--code-kw); }
+  .token-amber  { background: rgba(217,119,6,0.09);  color: var(--code-num); }
+
+  .vr-bar {
+    margin-top: 2.5rem; background: var(--code-bg); border-radius: var(--radius);
+    box-shadow: var(--nm-out); border: 1px solid var(--card-border); overflow: hidden;
+    transition: background 0.4s, box-shadow 0.4s, border-color 0.4s;
+  }
+  .vr-bar-header {
+    background: var(--surface); padding: 0.5rem 1.2rem;
+    border-bottom: 1px solid var(--tab-border);
+    display: flex; align-items: center; gap: 0.5rem;
+    transition: background 0.4s, border-color 0.4s;
+  }
+  .vr-bar-title { font-family: var(--font-mono); font-size: 0.68rem; color: var(--dim); }
+  .vr-bar-body {
+    padding: 1.2rem 1.6rem; display: flex; align-items: center;
+    justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  .vr-flow { display: flex; align-items: center; gap: 0.8rem; }
+  .vr-node {
+    padding: 0.35rem 1rem; border-radius: 8px;
+    border: 1px solid var(--tab-border); color: var(--mid); font-size: 0.78rem;
+    font-family: var(--font-mono);
+    background: var(--glass-bg); backdrop-filter: blur(8px);
+    box-shadow: 0 2px 8px var(--glass-shadow), inset 0 1px 0 var(--glass-shine);
+    transition: background 0.4s, border-color 0.4s;
+  }
+  .vr-node.hi {
+    background: var(--accent); color: #fff;
+    border-color: transparent; box-shadow: 0 4px 16px rgba(92,92,232,0.35);
+  }
+  .vr-arrow { color: var(--dim); font-size: 0.9rem; }
+
+  @media (max-width: 768px) {
+    .about-grid, .engine-top { grid-template-columns: 1fr; gap: 2.5rem; }
+    .features-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas-bg"></canvas>
+
+<nav>
+  <a href="home.html" class="nav-logo">
+    Coder Cube
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="home.html" class="active">Home</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg class="toggle-icon icon-sun" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="toggle-icon icon-moon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="cube-stage">
+    <div class="cube-nm-base">
+      <img class="cube-img" src="uploads/cube.png" alt="Coder Cube" id="cubeImg" />
+    </div>
+  </div>
+  <p class="hero-label">VR · Game Engine · Developer</p>
+  <h1 class="hero-title">Coder&nbsp;<span class="accent">Cube</span></h1>
+  <div class="hero-code-wrap">
+    <div class="code-titlebar">
+      <div class="code-dot" style="background:#ff5f57"></div>
+      <div class="code-dot" style="background:#febc2e"></div>
+      <div class="code-dot" style="background:#28c840"></div>
+      <span class="code-filename">helion.engine.ts</span>
+    </div>
+    <div class="code-body">
+      <div class="code-line"><span class="ln">1</span><span class="kw">const</span>&nbsp;<span class="fn">engine</span>&nbsp;<span class="pun">=</span>&nbsp;<span class="kw">new</span>&nbsp;<span class="fn">HelionEngine</span><span class="pun">({</span></div>
+      <div class="code-line"><span class="ln">2</span>&nbsp;&nbsp;<span class="fn">graphics</span><span class="pun">:</span>&nbsp;<span class="str">"raytraced"</span><span class="pun">,</span></div>
+      <div class="code-line"><span class="ln">3</span>&nbsp;&nbsp;<span class="fn">audio</span><span class="pun">:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"raytraced"</span><span class="pun">,</span></div>
+      <div class="code-line"><span class="ln">4</span>&nbsp;&nbsp;<span class="fn">physics</span><span class="pun">:</span>&nbsp;&nbsp;<span class="str">"advanced"</span><span class="pun">,</span>&nbsp;<span class="cmt">// 60 TPS</span></div>
+      <div class="code-line"><span class="ln">5</span>&nbsp;&nbsp;<span class="fn">target</span><span class="pun">:</span>&nbsp;&nbsp;&nbsp;<span class="str">"standalone-vr"</span><span class="pun">,</span></div>
+      <div class="code-line"><span class="ln">6</span>&nbsp;&nbsp;<span class="fn">optimize</span><span class="pun">:</span>&nbsp;<span class="num">true</span><span class="pun">,</span>&nbsp;<span class="cmt">// no compromises</span></div>
+      <div class="code-line"><span class="ln">7</span><span class="pun">});</span></div>
+    </div>
+  </div>
+  <div class="hero-cta">
+    <a href="#helion" class="btn">Explore Helion →</a>
+    <a href="#about" class="btn">About</a>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p class="section-eyebrow">About</p>
+        <h2 class="section-title">Building what<br>shouldn't be possible</h2>
+        <p>I'm <strong>Coder Cube</strong>, a solo game developer with one mission: make the highest-fidelity VR experience run on standalone hardware, no PC required.</p>
+        <p>Helion Engine bridges the gap from <strong>PCVR → Standalone VR → almost zero overhead</strong>. Every system; ray traversal, physics, audio propagation; is co-designed around standalone VR silicon from day one.</p>
+        <p>Not ported. <strong>Built for it.</strong></p>
+        <div class="stat-row">
+          <div class="stat-card"><div class="stat-num">01</div><div class="stat-label">Engine</div></div>
+          <div class="stat-card"><div class="stat-num" style="color:var(--accent2)">VR</div><div class="stat-label">First</div></div>
+          <div class="stat-card"><div class="stat-num">60</div><div class="stat-label">TPS physics</div></div>
+        </div>
+      </div>
+      <div class="editor-panel reveal">
+        <div class="editor-tabs">
+          <div class="editor-tab-dots">
+            <div class="code-dot" style="background:#ff5f57;width:9px;height:9px"></div>
+            <div class="code-dot" style="background:#febc2e;width:9px;height:9px"></div>
+            <div class="code-dot" style="background:#28c840;width:9px;height:9px"></div>
+          </div>
+          <div class="editor-tab active">engine.config</div>
+          <div class="editor-tab">readme.md</div>
+        </div>
+        <div class="editor-code">
+          <div class="code-line"><span class="ln">1</span><span class="cmt">// Helion Engine - 0.1.0-alpha</span></div>
+          <div class="code-line"><span class="ln">2</span></div>
+          <div class="code-line"><span class="ln">3</span><span class="kw">export</span>&nbsp;<span class="kw">const</span>&nbsp;<span class="fn">config</span>&nbsp;<span class="pun">= {</span></div>
+          <div class="code-line"><span class="ln">4</span>&nbsp;&nbsp;<span class="fn">build</span><span class="pun">:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"0.1.0-alpha"</span><span class="pun">,</span></div>
+          <div class="code-line"><span class="ln">5</span>&nbsp;&nbsp;<span class="fn">target</span><span class="pun">:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"standalone-vr"</span><span class="pun">,</span></div>
+          <div class="code-line"><span class="ln">6</span>&nbsp;&nbsp;<span class="fn">rt_samples</span><span class="pun">:</span>&nbsp;<span class="num">128</span><span class="pun">,</span></div>
+          <div class="code-line"><span class="ln">7</span>&nbsp;&nbsp;<span class="fn">audio_rays</span><span class="pun">:</span>&nbsp;<span class="num">64</span><span class="pun">,</span></div>
+          <div class="code-line"><span class="ln">8</span>&nbsp;&nbsp;<span class="fn">phys_tps</span><span class="pun">:</span>&nbsp;&nbsp;&nbsp;<span class="num">60</span><span class="pun">,</span></div>
+          <div class="code-line"><span class="ln">9</span>&nbsp;&nbsp;<span class="fn">arch</span><span class="pun">:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"ARM-SIMD"</span><span class="pun">,</span></div>
+          <div class="code-line"><span class="ln">10</span>&nbsp;&nbsp;<span class="fn">status</span><span class="pun">:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"active"</span><span class="pun">,</span></div>
+          <div class="code-line"><span class="ln">11</span><span class="pun">};</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- HELION ENGINE -->
+<section id="helion">
+  <div class="container">
+    <div class="engine-top reveal">
+      <div>
+        <p class="section-eyebrow">Helion Engine</p>
+        <h2 class="section-title">The engine built<br>for VR's <span style="color:var(--accent)">next frontier</span></h2>
+      </div>
+      <div class="engine-desc">
+        <p>The gap between PCVR and standalone VR has always been a hardware problem. Helion treats it as a <strong>software and architecture problem</strong>.</p>
+        <p>Every subsystem is co-designed around standalone silicon - delivering PC-class fidelity on hardware that fits on your face.</p>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feat-code-header">
+          <div class="feat-code-dot" style="background:#ff5f57"></div>
+          <div class="feat-code-dot" style="background:#febc2e"></div>
+          <div class="feat-code-dot" style="background:#28c840"></div>
+          <span class="feat-filename">rt_graphics.rs</span>
+        </div>
+        <div class="feat-body">
+          <div class="feat-title">Raytraced Graphics</div>
+          <p class="feat-desc">Per-pixel raytracing using Sparse Voxel Octrees for acceleration. Global illumination, soft shadows, and accurate reflections on mobile GPUs.</p>
+          <span class="token token-blue">rt_gfx · SVO · GI</span>
+        </div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feat-code-header">
+          <div class="feat-code-dot" style="background:#ff5f57"></div>
+          <div class="feat-code-dot" style="background:#febc2e"></div>
+          <div class="feat-code-dot" style="background:#28c840"></div>
+          <span class="feat-filename">rt_audio.rs</span>
+        </div>
+        <div class="feat-body">
+          <div class="feat-title">Raytraced Audio</div>
+          <p class="feat-desc">Sound rays propagate through real geometry. Occlusion, reverb, and diffraction computed from the actual scene - not pre-baked, not approximated.</p>
+          <span class="token token-purple">rt_audio · occlusion</span>
+        </div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feat-code-header">
+          <div class="feat-code-dot" style="background:#ff5f57"></div>
+          <div class="feat-code-dot" style="background:#febc2e"></div>
+          <div class="feat-code-dot" style="background:#28c840"></div>
+          <span class="feat-filename">physics.rs</span>
+        </div>
+        <div class="feat-body">
+          <div class="feat-title">Advanced Physics</div>
+          <p class="feat-desc">High-fidelity rigid body simulation at 60 TPS. SIMD-vectorized solver tuned for ARM microarchitectures from the ground up.</p>
+          <span class="token token-amber">phys · 60TPS · SIMD</span>
+        </div>
+      </div>
+    </div>
+    <div class="vr-bar reveal">
+      <div class="vr-bar-header">
+        <div class="feat-code-dot" style="background:#ff5f57;width:9px;height:9px"></div>
+        <div class="feat-code-dot" style="background:#febc2e;width:9px;height:9px"></div>
+        <div class="feat-code-dot" style="background:#28c840;width:9px;height:9px"></div>
+        <span class="vr-bar-title">vr_bridge.config - Platform Targets</span>
+      </div>
+      <div class="vr-bar-body">
+        <div class="vr-flow">
+          <span class="vr-node">PCVR</span>
+          <span class="vr-arrow">→</span>
+          <span class="vr-node">Standalone VR</span>
+          <span class="vr-arrow">→</span>
+          <span class="vr-node hi">Almost Zero</span>
+        </div>
+        <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--dim)">// bridging the gap</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Coder Cube &nbsp;·&nbsp; Helion Engine &nbsp;·&nbsp; © 2026</footer>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const dark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('cc-theme', dark ? 'dark' : 'light');
+});
+
+const canvas = document.getElementById('canvas-bg');
+const ctx = canvas.getContext('2d');
+let W, H, pts = [];
+function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+resize(); window.addEventListener('resize', resize);
+for(let i=0;i<40;i++) pts.push({ x:Math.random()*W, y:Math.random()*H, vx:(Math.random()-.5)*.15, vy:(Math.random()-.5)*.15, r:Math.random()*1.2+.4, a:Math.random()*.2+.05 });
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  for(let i=0;i<pts.length;i++){
+    const p=pts[i];
+    for(let j=i+1;j<pts.length;j++){
+      const q=pts[j],d=Math.hypot(p.x-q.x,p.y-q.y);
+      if(d<130){ ctx.strokeStyle=`rgba(92,92,232,${.05*(1-d/130)})`; ctx.lineWidth=.5; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.stroke(); }
+    }
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(92,92,232,${p.a})`; ctx.fill();
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0||p.x>W) p.vx*=-1;
+    if(p.y<0||p.y>H) p.vy*=-1;
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+
+const stage = document.querySelector('.cube-stage');
+const img = document.getElementById('cubeImg');
+document.addEventListener('mousemove', e => {
+  const r = stage.getBoundingClientRect();
+  const dx = (e.clientX-(r.left+r.width/2))/200;
+  const dy = (e.clientY-(r.top+r.height/2))/200;
+  img.style.transform = `perspective(500px) rotateY(${dx*14}deg) rotateX(${-dy*10}deg)`;
+});
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }});
+}, {threshold:0.1});
+document.querySelectorAll('.reveal').forEach(r => io.observe(r));
+</script>
+</body>
+</html>

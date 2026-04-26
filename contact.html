@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Coder Cube - Contact</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
+<link rel="icon" href="uploads/cube.png" />
+<style>
+  body { display:flex; flex-direction:column; min-height:100vh; }
+
+  .contact-page {
+    flex:1; display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding: 7rem 2rem 4rem;
+    position:relative; z-index:1;
+    background: var(--bg); transition: background 0.4s;
+  }
+
+  .contact-header {
+    text-align:center; margin-bottom:4rem;
+  }
+  .contact-header h1 {
+    font-size: clamp(2.5rem,5vw,4.5rem);
+    font-weight:700; letter-spacing:-0.04em; margin-bottom:0.6rem;
+  }
+  .contact-header p { color:var(--mid); line-height:1.7; max-width:420px; margin:0 auto; }
+
+  .contact-cards {
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:1.4rem; max-width:860px; width:100%;
+  }
+  .contact-card {
+    background: var(--code-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 22px;
+    box-shadow: var(--nm-out);
+    overflow:hidden;
+    transition: background 0.4s, box-shadow 0.4s, border-color 0.4s, transform 0.25s;
+    display:flex; flex-direction:column;
+  }
+  .contact-card:hover { transform:translateY(-4px); }
+
+  .contact-card-header {
+    background:var(--surface); padding:0.6rem 1rem;
+    border-bottom:1px solid var(--tab-border);
+    display:flex; align-items:center; gap:0.4rem;
+    transition: background 0.4s, border-color 0.4s;
+  }
+  .contact-card-header-dots { display:flex; gap:4px; margin-right:auto; }
+
+  .contact-card-body {
+    padding: 2.2rem 2rem 2rem;
+    display:flex; flex-direction:column; gap:1.2rem; flex:1;
+  }
+
+  .contact-platform-icon {
+    width:52px; height:52px; border-radius:16px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.5rem;
+    background:var(--glass-bg); backdrop-filter:blur(12px);
+    border:1px solid var(--glass-border);
+    box-shadow:0 2px 12px var(--glass-shadow), inset 0 1px 0 var(--glass-shine);
+    transition: background 0.4s;
+  }
+
+  .contact-platform-name {
+    font-size:1.1rem; font-weight:700; letter-spacing:-0.01em;
+  }
+  .contact-platform-desc {
+    color:var(--mid); font-size:0.88rem; line-height:1.6; flex:1;
+  }
+  .contact-platform-handle {
+    font-family:var(--font-mono); font-size:0.75rem; color:var(--dim);
+    margin-top:auto;
+  }
+
+  .contact-card-link {
+    display:block; text-decoration:none; color:inherit;
+  }
+  .contact-card-link .btn {
+    width:100%; justify-content:center; font-size:0.8rem;
+  }
+
+  .platform-email  .contact-platform-icon { background:rgba(92,92,232,0.1); border-color:rgba(92,92,232,0.2); }
+  .platform-youtube .contact-platform-icon { background:rgba(255,50,50,0.09); border-color:rgba(255,50,50,0.2); }
+  .platform-github .contact-platform-icon { background:rgba(80,80,100,0.08); border-color:rgba(80,80,100,0.18); }
+
+  html.dark .platform-email  .contact-platform-icon { background:rgba(130,130,255,0.12); }
+  html.dark .platform-youtube .contact-platform-icon { background:rgba(255,60,60,0.12); }
+  html.dark .platform-github .contact-platform-icon { background:rgba(200,200,220,0.08); }
+
+  @media (max-width:700px) {
+    .contact-cards { grid-template-columns:1fr; max-width:400px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas-bg"></canvas>
+
+<nav>
+  <a href="home.html" class="nav-logo">Coder Cube</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg class="toggle-icon icon-sun" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="toggle-icon icon-moon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</nav>
+
+<div class="contact-page">
+  <div class="contact-header reveal">
+    <p class="section-eyebrow">Get in touch</p>
+    <h1>Let's build the<br>future together</h1>
+    <p>Reach out for collaborations, questions about Helion Engine, or anything VR.</p>
+  </div>
+
+  <div class="contact-cards">
+    <!-- EMAIL -->
+    <div class="contact-card platform-email reveal">
+      <div class="contact-card-header">
+        <div class="contact-card-header-dots">
+          <div class="code-dot" style="background:#ff5f57;width:8px;height:8px"></div>
+          <div class="code-dot" style="background:#febc2e;width:8px;height:8px"></div>
+          <div class="code-dot" style="background:#28c840;width:8px;height:8px"></div>
+        </div>
+        <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--dim)">contact.ts</span>
+      </div>
+      <div class="contact-card-body">
+        <div class="contact-platform-icon">✉</div>
+        <div class="contact-platform-name">Email</div>
+        <p class="contact-platform-desc">For collaboration proposals, engine questions, or anything you'd like to discuss in depth.</p>
+        <div class="contact-platform-handle">codercube643@gmail.com</div>
+        <a href="mailto:codercube643@gmail.com" class="contact-card-link">
+          <div class="btn btn-email">Send an email →</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- YOUTUBE -->
+    <div class="contact-card platform-youtube reveal">
+      <div class="contact-card-header">
+        <div class="contact-card-header-dots">
+          <div class="code-dot" style="background:#ff5f57;width:8px;height:8px"></div>
+          <div class="code-dot" style="background:#febc2e;width:8px;height:8px"></div>
+          <div class="code-dot" style="background:#28c840;width:8px;height:8px"></div>
+        </div>
+        <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--dim)">youtube.ts</span>
+      </div>
+      <div class="contact-card-body">
+        <div class="contact-platform-icon">▶</div>
+        <div class="contact-platform-name">YouTube</div>
+        <p class="contact-platform-desc">Devlogs, engine demos, and deep-dives into the technology behind Helion Engine.</p>
+        <div class="contact-platform-handle">@Coder_Cube</div>
+        <a href="https://www.youtube.com/@Coder_Cube" target="_blank" rel="noopener" class="contact-card-link">
+          <div class="btn btn-youtube">Watch the channel →</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- GITHUB -->
+    <div class="contact-card platform-github reveal">
+      <div class="contact-card-header">
+        <div class="contact-card-header-dots">
+          <div class="code-dot" style="background:#ff5f57;width:8px;height:8px"></div>
+          <div class="code-dot" style="background:#febc2e;width:8px;height:8px"></div>
+          <div class="code-dot" style="background:#28c840;width:8px;height:8px"></div>
+        </div>
+        <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--dim)">github.ts</span>
+      </div>
+      <div class="contact-card-body">
+        <div class="contact-platform-icon">⌥</div>
+        <div class="contact-platform-name">GitHub</div>
+        <p class="contact-platform-desc">Source code, open experiments, and public repositories related to ongoing projects.</p>
+        <div class="contact-platform-handle">github.com/MonoliGames</div>
+        <a href="https://github.com/MonoliGames" target="_blank" rel="noopener" class="contact-card-link">
+          <div class="btn btn-github">View on GitHub →</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Coder Cube &nbsp;·&nbsp; Helion Engine &nbsp;·&nbsp; © 2026</footer>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const dark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('cc-theme', dark ? 'dark' : 'light');
+});
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }});
+}, {threshold:0.1});
+document.querySelectorAll('.reveal').forEach(r => io.observe(r));
+
+const canvas = document.getElementById('canvas-bg');
+const ctx = canvas.getContext('2d');
+let W, H, pts = [];
+function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+resize(); window.addEventListener('resize', resize);
+for(let i=0;i<30;i++) pts.push({ x:Math.random()*W, y:Math.random()*H, vx:(Math.random()-.5)*.12, vy:(Math.random()-.5)*.12, r:Math.random()*.9+.3, a:Math.random()*.15+.04 });
+(function draw(){
+  ctx.clearRect(0,0,W,H);
+  pts.forEach(p => {
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(92,92,232,${p.a})`; ctx.fill();
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0||p.x>W) p.vx*=-1;
+    if(p.y<0||p.y>H) p.vy*=-1;
+  });
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
