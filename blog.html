@@ -162,6 +162,12 @@ const BLOG_POSTS = [
     body: "This is the first official devlog for <b>Helion Engine</b>. This project started on the first of this year as a question: <i>what if we stopped treating standalone VR hardware as a limitation and started treating it as a design constraint?</i>\n\nThe core idea is to build everything - rendering, audio, physics - with that constraint in mind from <b>day one</b>. Not a desktop engine ported down. Something <b>built for it</b>.\n\nMore technical details coming soon.",
     images: ["uploads/HelionLogo.png"]
   },
+  {
+    date: "4/27/26",
+    title: "Technical Details",
+    body: "The engine I'm building aims to push VR forward in a meaningful way.\n\nMany current VR experiences rely on low-detail visuals and minimal design effort. I want to take a different approach.\n\nThe Helion Engine is intended to deliver high-quality visuals, gameplay systems, interactions, and audio. Achieving that will require significant time and effort. At the moment, the project consists of a Unity <m>ScriptableRendererFeature</m> with a moderately capable renderer, along with a method to run it independently of Unity.\n\nMy immediate priority is completing the lighting system. After that, I plan to expand the engine itself, as many of the features I have in mind depend on the ray tracing capabilities used in the renderer. One of the main challenges will be optimizing ray tracing to run efficiently on hardware like the Quest 2, but I can work that out after enough time.",
+    images: []
+  },
 ];
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
