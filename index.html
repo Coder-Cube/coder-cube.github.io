@@ -8,6 +8,19 @@
 <link rel="stylesheet" href="site.css" />
 <link rel="icon" href="uploads/cube.png" />
 
+<script>
+const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+function updateTheme() {
+  if (mediaQuery.matches) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+}
+updateTheme();
+mediaQuery.addEventListener('change', updateTheme);
+</script>
+
 <template id="__bundler_thumbnail" data-bg-color="#eaeaf4">
   <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
     <rect width="800" height="600" fill="#eaeaf4"/>
@@ -363,17 +376,6 @@
 <footer>Coder Cube &nbsp;·&nbsp; Helion Engine &nbsp;·&nbsp; © 2026</footer>
 
 <script>
-const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-function updateTheme() {
-  if (mediaQuery.matches) {
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-  }
-}
-updateTheme();
-mediaQuery.addEventListener('change', updateTheme);
-
 const canvas = document.getElementById('canvas-bg');
 const ctx = canvas.getContext('2d');
 let W, H, pts = [];

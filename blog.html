@@ -8,6 +8,19 @@
 <link rel="stylesheet" href="site.css" />
 <link rel="icon" href="uploads/cube.png" />
 
+<script>
+const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+function updateTheme() {
+  if (mediaQuery.matches) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+}
+updateTheme();
+mediaQuery.addEventListener('change', updateTheme);
+</script>
+
 <style>
   .blog-hero {
     padding: 10rem 3rem 4rem;
@@ -289,37 +302,6 @@ document.addEventListener('mousemove', e => {
 document.addEventListener('mouseout', e => {
   if (!e.target.closest('[data-fulldate]')) tooltip.style.opacity = '0';
 });
-
-const savedTheme = localStorage.getItem('cc-theme');
-if (savedTheme === 'dark') {
-  document.documentElement.classList.add('dark');
-}
-
-window.addEventListener('storage', (e) => {
-  if (e.key === 'cc-theme') {
-    if (e.newValue === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }
-});
-
-document.getElementById('themeToggle').addEventListener('click', () => {
-  const dark = document.documentElement.classList.toggle('dark');
-  localStorage.setItem('cc-theme', dark ? 'dark' : 'light');
-});
-
-const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-function updateTheme() {
-  if (mediaQuery.matches) {
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-  }
-}
-updateTheme();
-mediaQuery.addEventListener('change', updateTheme);
 
 const canvas = document.getElementById('canvas-bg');
 const ctx = canvas.getContext('2d');
