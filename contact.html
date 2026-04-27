@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Coder Cube - Contact</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.2.0/css/line.css" />
 <link rel="stylesheet" href="site.css" />
 <link rel="icon" href="uploads/cube.png" />
 
@@ -50,10 +51,9 @@ mediaQuery.addEventListener('change', updateTheme);
     border-radius: 22px;
     box-shadow: var(--nm-out);
     overflow:hidden;
-    transition: background 0.4s, box-shadow 0.4s, border-color 0.4s, transform 0.25s;
     display:flex; flex-direction:column;
+    transition-delay: calc(125ms * var(--blur) + 200ms);
   }
-  .contact-card:hover { transform:translateY(-4px); }
 
   .contact-card-header {
     background:var(--surface); padding:0.6rem 1rem;
@@ -96,11 +96,13 @@ mediaQuery.addEventListener('change', updateTheme);
     width:100%; justify-content:center; font-size:0.8rem;
   }
 
-  .platform-email  .contact-platform-icon { background:rgba(92,92,232,0.1); border-color:rgba(92,92,232,0.2); }
+  .platform-email  .contact-platform-icon { background:rgba(80,80,100,0.08); border-color:rgba(80,80,100,0.18); }
+  .platform-discord  .contact-platform-icon { background:rgba(92,92,232,0.1); border-color:rgba(92,92,232,0.2); }
   .platform-youtube .contact-platform-icon { background:rgba(255,50,50,0.09); border-color:rgba(255,50,50,0.2); }
   .platform-github .contact-platform-icon { background:rgba(80,80,100,0.08); border-color:rgba(80,80,100,0.18); }
 
-  html.dark .platform-email  .contact-platform-icon { background:rgba(130,130,255,0.12); }
+  html.dark .platform-email  .contact-platform-icon { background:rgba(200,200,220,0.08); }
+  html.dark .platform-discord  .contact-platform-icon { background:rgba(130,130,255,0.12); }
   html.dark .platform-youtube .contact-platform-icon { background:rgba(255,60,60,0.12); }
   html.dark .platform-github .contact-platform-icon { background:rgba(200,200,220,0.08); }
 
@@ -132,29 +134,9 @@ mediaQuery.addEventListener('change', updateTheme);
   </div>
 
   <div class="contact-cards">
-    <!-- EMAIL -->
-    <div class="contact-card platform-email reveal">
-      <div class="contact-card-header">
-        <div class="contact-card-header-dots">
-          <div class="code-dot" style="background:#ff5f57;width:8px;height:8px"></div>
-          <div class="code-dot" style="background:#febc2e;width:8px;height:8px"></div>
-          <div class="code-dot" style="background:#28c840;width:8px;height:8px"></div>
-        </div>
-        <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--dim)">contact.ts</span>
-      </div>
-      <div class="contact-card-body">
-        <div class="contact-platform-icon">✉</div>
-        <div class="contact-platform-name">Email</div>
-        <p class="contact-platform-desc">For collaboration proposals, engine questions, or anything you'd like to discuss in depth.</p>
-        <div class="contact-platform-handle">codercube643@gmail.com</div>
-        <a href="mailto:codercube643@gmail.com" class="contact-card-link">
-          <div class="btn btn-email">Send an email →</div>
-        </a>
-      </div>
-    </div>
-
+  
     <!-- YOUTUBE -->
-    <div class="contact-card platform-youtube reveal">
+    <div class="contact-card platform-youtube reveal" style="--blur: 1;">
       <div class="contact-card-header">
         <div class="contact-card-header-dots">
           <div class="code-dot" style="background:#ff5f57;width:8px;height:8px"></div>
@@ -164,7 +146,7 @@ mediaQuery.addEventListener('change', updateTheme);
         <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--dim)">youtube.ts</span>
       </div>
       <div class="contact-card-body">
-        <div class="contact-platform-icon">▶</div>
+        <div class="contact-platform-icon"><i class="uil uil-youtube"></i></div>
         <div class="contact-platform-name">YouTube</div>
         <p class="contact-platform-desc">Devlogs, engine demos, and deep-dives into the technology behind Helion Engine.</p>
         <div class="contact-platform-handle">@Coder_Cube</div>
@@ -173,30 +155,9 @@ mediaQuery.addEventListener('change', updateTheme);
         </a>
       </div>
     </div>
-
-    <!-- GITHUB -->
-    <div class="contact-card platform-github reveal">
-      <div class="contact-card-header">
-        <div class="contact-card-header-dots">
-          <div class="code-dot" style="background:#ff5f57;width:8px;height:8px"></div>
-          <div class="code-dot" style="background:#febc2e;width:8px;height:8px"></div>
-          <div class="code-dot" style="background:#28c840;width:8px;height:8px"></div>
-        </div>
-        <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--dim)">github.ts</span>
-      </div>
-      <div class="contact-card-body">
-        <div class="contact-platform-icon">⌥</div>
-        <div class="contact-platform-name">GitHub</div>
-        <p class="contact-platform-desc">Source code, open experiments, and public repositories related to ongoing projects.</p>
-        <div class="contact-platform-handle">github.com/Coder-Cube</div>
-        <a href="https://github.com/coder-cube" target="_blank" rel="noopener" class="contact-card-link">
-          <div class="btn btn-github">View on GitHub →</div>
-        </a>
-      </div>
-    </div>
-
+    
     <!-- DISCORD -->
-    <div class="contact-card platform-email reveal">
+    <div class="contact-card platform-discord reveal" style="--blur: 2;">
       <div class="contact-card-header">
         <div class="contact-card-header-dots">
           <div class="code-dot" style="background:#ff5f57;width:8px;height:8px"></div>
@@ -206,15 +167,59 @@ mediaQuery.addEventListener('change', updateTheme);
         <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--dim)">discord.ts</span>
       </div>
       <div class="contact-card-body">
-        <div class="contact-platform-icon">⌁</div>
+        <div class="contact-platform-icon"><i class="uil uil-comment-alt-message"></i></div>
         <div class="contact-platform-name">Discord</div>
         <p class="contact-platform-desc">For collaborations, engine questions, or general community discussion</p>
         <div class="contact-platform-handle">@coder_cube</div>
         <a href="https://discord.gg/VDdE2738bH" class="contact-card-link">
-          <div class="btn btn-email">Join the Server →</div>
+          <div class="btn btn-discord">Join the Server →</div>
         </a>
       </div>
     </div>
+
+    <!-- EMAIL -->
+    <div class="contact-card platform-email reveal" style="--blur: 3;">
+      <div class="contact-card-header">
+        <div class="contact-card-header-dots">
+          <div class="code-dot" style="background:#ff5f57;width:8px;height:8px"></div>
+          <div class="code-dot" style="background:#febc2e;width:8px;height:8px"></div>
+          <div class="code-dot" style="background:#28c840;width:8px;height:8px"></div>
+        </div>
+        <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--dim)">contact.ts</span>
+      </div>
+      <div class="contact-card-body">
+        <div class="contact-platform-icon"><i class="uil uil-envelope"></i></div>
+        <div class="contact-platform-name">Email</div>
+        <p class="contact-platform-desc">For collaboration proposals, engine questions, or anything you'd like to discuss in depth.</p>
+        <div class="contact-platform-handle">codercube643@gmail.com</div>
+        <a href="mailto:codercube643@gmail.com" class="contact-card-link">
+          <div class="btn btn-email">Send an email →</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- GITHUB -->
+    <div class="contact-card platform-github reveal" style="--blur: 4;">
+      <div class="contact-card-header">
+        <div class="contact-card-header-dots">
+          <div class="code-dot" style="background:#ff5f57;width:8px;height:8px"></div>
+          <div class="code-dot" style="background:#febc2e;width:8px;height:8px"></div>
+          <div class="code-dot" style="background:#28c840;width:8px;height:8px"></div>
+        </div>
+        <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--dim)">github.ts</span>
+      </div>
+      <div class="contact-card-body">
+        <div class="contact-platform-icon"><i class="uil uil-github"></i></div>
+        <div class="contact-platform-name">GitHub</div>
+        <p class="contact-platform-desc">Source code, open experiments, and public repositories related to ongoing projects.</p>
+        <div class="contact-platform-handle">github.com/Coder-Cube</div>
+        <a href="https://github.com/coder-cube" target="_blank" rel="noopener" class="contact-card-link">
+          <div class="btn btn-github">View on GitHub →</div>
+        </a>
+      </div>
+    </div>
+
+    
   </div>
 </div>
 
