@@ -178,6 +178,15 @@ const BLOG_POSTS = [
     body: "The engine I'm building aims to push VR forward in a meaningful way.\n\nMany current VR experiences rely on low-detail visuals and minimal design effort. I want to take a different approach.\n\nThe Helion Engine is intended to deliver high-quality visuals, gameplay systems, interactions, and audio. Achieving that will require significant time and effort. At the moment, the project consists of a Unity <m>ScriptableRendererFeature</m> with a moderately capable renderer, along with a method to run it independently of Unity.\n\nMy immediate priority is completing the lighting system. After that, I plan to expand the engine itself, as many of the features I have in mind depend on the ray tracing capabilities used in the renderer. One of the main challenges will be optimizing ray tracing to run efficiently on hardware like the Quest 2, but I can work that out after enough time. I attached images showing what I have so far captured on the Quest 2 at lowest settings.",
     images: ["uploads/1-1.png", "uploads/1-2.png", "uploads/1-3.png", "uploads/1-4.png", "uploads/1-5.png"]
   },
+<<<<<<< HEAD
+=======
+  {
+    date: "5/6/26",
+    title: "Transitioning Away From Voxels",
+    body: "The long wait (for me at least) has finally ended. Voxels have been left behind. \n\nVoxel ray traversal has been <b><i>ditched.</i></b>\n\n My original plan was to use transformation functions to bend the ray to simulate geometry, but I have fully abandoned that. Introducing: SDFs! \n\n (Please be suportive I had to rewrite <b><i>EVERYTHING</i></b> except lighting for this)",
+    images: ["uploads/2-1.png"]
+  },
+>>>>>>> ee693f5 (Add New Blog Post)
 ];
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
