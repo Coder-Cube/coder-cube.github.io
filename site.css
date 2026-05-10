@@ -123,9 +123,48 @@ nav {
   color: var(--mid); text-decoration: none; font-size: 0.85rem;
   padding: 0.4rem 0.9rem; border-radius: 20px;
   transition: color 0.2s, background 0.2s;
+  position: relative;
 }
 .nav-links a:hover { color: var(--accent); background: rgba(92,92,232,0.07); }
 .nav-links a.active { color: var(--accent); background: rgba(92,92,232,0.1); }
+
+/* Hamburger menu */
+.ham {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 400ms;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: none; /* hidden on desktop */
+}
+.hamRotate.active {
+  transform: rotate(45deg);
+}
+.hamRotate180.active {
+  transform: rotate(180deg);
+}
+.line {
+  fill:none;
+  transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
+  stroke: var(--ink);
+  stroke-width:5.5;
+  stroke-linecap:round;
+}
+html.dark .line { stroke: var(--ink); } /* already var(--ink) */
+.ham1 .top {
+  stroke-dasharray: 40 139;
+}
+.ham1 .bottom {
+  stroke-dasharray: 40 180;
+}
+.ham1.active .top {
+  stroke-dashoffset: -98px;
+}
+.ham1.active .bottom {
+  stroke-dashoffset: -138px;
+}
 
 /* Theme toggle */
 .theme-toggle {
@@ -349,6 +388,26 @@ footer {
 /* ── MOBILE ── */
 @media (max-width: 768px) {
   nav { padding: 0.9rem 1.4rem; }
-  .nav-links li:not(:last-child) { display: none; }
+  .ham { display: block; position: absolute; right: 1.4rem; top: 50%; transform: translateY(-50%); }
+  .nav-links { display: none; }
+  nav.mobile-open .nav-links {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--nav-bg);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border-bottom: 1px solid var(--nav-border);
+    padding: 0.8rem;
+    gap: 0.9rem;
+    align-items: flex-end;
+  }
+  nav.mobile-open .nav-links a {
+    padding: 0.6rem 1rem;
+    border-radius: 12px;
+  }
   section { padding: 5rem 1.4rem; }
 }
