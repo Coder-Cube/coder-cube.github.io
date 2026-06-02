@@ -195,6 +195,12 @@ const BLOG_POSTS = [
     body: "The long wait (for me at least) has finally ended. Voxels and Unity have both been left behind. \n\nVoxel ray traversal has been <b><i>ditched.</i></b>\n\n My original plan was to use transformation functions to bend the ray to simulate geometry, but I have fully abandoned that. I've built a minimal base for the Helion Engine going forward, and it includes a different method of rendering! Introducing: SDFs! \n\n (Please be suportive I had to rewrite <b><i>EVERYTHING</i></b> except lighting for this)",
     images: ["uploads/2-1.png"]
   },
+  {
+    date: "6/1/26",
+    title: "Transitioning Back To Voxels",
+    body: "After a whole month of radio silence, a lot has changed. After working with SDFs for ~2.5 weeks, I dialed back my excitement to just do something new, and I realized the reality of them. As little as 22 SDFs would cause the whole machine to lag, and trying that on mobile hardware would be a nightmare. I did learn a large amount from this, and I will repurpose that into a TLAS/BLAS system, and restructure the engine to account for that. The \"Minimal Base\" I had built was far too minimal, as it was honestly nothing more than ImGui and a poorly written SDF marcher. So moving forward, the Helion Engine will be: \n\n\t\t • Built slower, rather than the rushed SDF system \n\t\t • Designed for real-world performance with a lighter, optimized structure \n\t\t • Fully open source, configurable, and modifiable. \n\n Changes to the original Unity <m>ScriptableRendererFeature</m> include various optimizations and improvements, such as: \n\n\t\t • Probe Based DDGI rather than the older sample-heavy approach \n\t\t • Improved depth based shadow blur with reduced noise \n\t\t • Fixed camera FOV projection \n\t\t • 4x subpixel sampling",
+    images: ["uploads/3-1.png"]
+  },
 ];
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
