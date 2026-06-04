@@ -201,6 +201,12 @@ const BLOG_POSTS = [
     body: "After working with SDFs for ~2.5 weeks, I dialed back my excitement, and I realized the reality of SDFs. As little as 22 would cause the whole machine to lag, and trying that on mobile hardware and expecting thousands of FPS would be a nightmare. I did learn a large amount from this, and I will repurpose that into a TLAS/BLAS system, and restructure the engine to account for that. The \"Minimal Base\" I had built was far too minimal, as it was honestly nothing more than ImGui and a poorly written SDF marcher. So moving forward, the Helion Engine will be: \n\n\t\t • Built slower, rather than the rushed SDF system \n\t\t • Designed for real-world performance with a lighter, optimized structure \n\t\t • Fully open source, configurable, and modifiable. \n\n Changes to the original Unity <m>ScriptableRendererFeature</m> include various optimizations and improvements, such as: \n\n\t\t • Probe Based DDGI rather than the older sample-heavy approach \n\t\t • Improved depth based shadow blur with reduced noise \n\t\t • Fixed camera FOV projection \n\t\t • 4x subpixel sampling",
     images: ["uploads/3-1.png"]
   },
+  {
+    date: "6/3/26",
+    title: "Improvements to GI and optimizations",
+    body: "Various improvements to the render pipeline have been made. SVTs have been implemented, GI now looks much better, and runs <b>3x better.</b> The previous version of the probe-based GI was super noisy, slow to render, and ate up RAM faster than an AI data center. The new version blends the old single-bounce hemisphere sampling with the probe based system, having the following features: \n\n\t\t • Probe based backend for performance \n\t\t • Single indirect bounce for fully simulated indirect lighting and better color bleeding \n\t\t • Proper emissive rendering via rays casted to lights \n\n Images are attached of: \n\n\t\t • A comparsion of the old GI (left) and the old GI (right) \n\t\t • The new GI system \n\t\t • 256^3 voxels rendering",
+    images: ["uploads/4-1.png", "uploads/4-2.png", "uploads/4-3.png"]
+  },
 ];
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
