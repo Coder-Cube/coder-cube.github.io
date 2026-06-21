@@ -207,6 +207,12 @@ const BLOG_POSTS = [
     body: "Various improvements to the render pipeline have been made. SVTs have been implemented, GI now looks much better, and runs <b>3x better.</b> The previous version of the probe-based GI was super noisy, slow to render, and ate up RAM faster than an AI data center. The new version blends the old single-bounce hemisphere sampling with the probe based system, having the following features: \n\n\t\t • Probe based backend for performance \n\t\t • Single indirect bounce for fully simulated indirect lighting and better color bleeding \n\t\t • Proper emissive rendering via rays casted to lights \n\n Images are attached of: \n\n\t\t • A comparsion of the old GI (left) and the old GI (right) \n\t\t • The new GI system \n\t\t • 256^3 voxels rendering",
     images: ["uploads/4-1.png", "uploads/4-2.png", "uploads/4-3.png"]
   },
+  {
+    date: "6/21/26",
+    title: "GI rewritten (again) and RAM  use reduction",
+    body: "Yet again, I have rewritten GI. I found the probe based system was a decent proof of concept, but not a good product to ship. In small demos with low numbers of probes (16^3 to 32^3), such as the cornell box scene I use for demos, it provided the following: \n\n\t\t • Very good visual quality \n\t\t • Efficient performance-wise on old hardware \n\t\t • Smooth across surfaces, with little to <b>no visible noise</b> \n\n But in larger scenes (64^3 or more probes), it brought: \n\n\t\t • Exploding RAM usage <b>(1-2GB)</b> \n\t\t • Ridiculous amounts of steps for GI (4-8 <i><b>million</b></i>) \n\t\t • 20-30fps on a <i><b>5070 Ti</b></i> \n\n So I made the <i>(hopefully)</i> final rewrite. The new global illumination system is <b>fully path traced</b>, rather than the blend of probes and single-bounce bleeding I made before. \n\n The new system has: \n\n\t\t • Reduced noise due to temporal reprojection \n\t\t • Consistent preformance no matter where you are in the world \n\t\t • <b>100% quality</b> for less than of <b><i>10%</i> the memory</b> \n\n Honestly, the reprojection <i>could</i> use some work, but that's for a later date. \n\n Images of the new system are attached in the following order: \n\n\t\t • The new GI <b>with</b> reprojection \n\t\t • The new GI <b>without</b> reprojection \n\t\t • No GI at all",
+    images: ["uploads/5-1.png", "uploads/5-2.png", "uploads/5-3.png"]
+  },
 ];
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
